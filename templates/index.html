@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Academic Advisor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><rect width="34" height="34" rx="10" fill="#3547E8"/><path d="M7 13l10-5 10 5-10 5z" fill="#fff"/><path d="M11 17v5c0 2 3 4 6 4s6-2 6-4v-5l-6 3z" fill="#B9C1FF"/></svg>
+      <div><h1>Academic Advisor</h1><p>CSC 303 project, a machine-learning model with a rule-based coach</p></div>
+    </div>
+    <nav class="tabs" role="tablist">
+      <button class="tab on" data-tab="advisor" role="tab">Advisor</button>
+      <button class="tab" data-tab="gpa" role="tab">GPA calculator</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ADVISOR -->
+    <section id="advisor" class="view on">
+      <form id="profile" class="panel" autocomplete="off">
+        <h2>Your profile</h2>
+        <p class="hint">Drag the sliders to match your last semester.</p>
+        <div id="sliders"></div>
+        <label class="level">Level
+          <select name="level" id="level">
+            <option value="100">100 level</option><option value="200">200 level</option>
+            <option value="300" selected>300 level</option><option value="400">400 level</option>
+          </select>
+        </label>
+        <button type="submit" class="go">Get my advice</button>
+        <p class="note">Model accuracy on test data: {{ accuracy }}%. Trained on synthetic records, so treat results as guidance, not a verdict.</p>
+      </form>
+
+      <div class="panel result" id="result" aria-live="polite">
+        <div class="empty" id="empty">
+          <svg width="120" height="120" viewBox="0 0 120 120"><circle cx="60" cy="60" r="50" fill="none" stroke="#DDE1F5" stroke-width="12" stroke-dasharray="4 10" stroke-linecap="round"/></svg>
+          <p>Your standing and personal plan will appear here.</p>
+        </div>
+        <div id="out" hidden>
+          <div class="hero">
+            <div class="gauge">
+              <svg viewBox="0 0 160 160"><circle cx="80" cy="80" r="66" class="track"/><circle id="arc" cx="80" cy="80" r="66" class="arc"/></svg>
+              <div class="gauge-text"><strong id="pct">0%</strong><span>confidence</span></div>
+            </div>
+            <div>
+              <p class="label">Predicted standing</p>
+              <h2 id="standing" class="standing">-</h2>
+              <p id="summary" class="summary"></p>
+            </div>
+          </div>
+          <h3>How sure is the model</h3>
+          <div id="bars" class="bars"></div>
+          <h3>Your plan</h3>
+          <ul id="advice" class="advice"></ul>
+        </div>
+        <p id="error" class="error" hidden></p>
+      </div>
+    </section>
+
+    <!-- GPA -->
+    <section id="gpa" class="view">
+      <div class="panel wide">
+        <h2>GPA calculator</h2>
+        <p class="hint">5.0 scale: A = 5, B = 4, C = 3, D = 2, E = 1, F = 0.</p>
+        <div id="courses"></div>
+        <div class="row-actions">
+          <button type="button" class="ghost" id="addCourse">Add course</button>
+          <button type="button" class="go" id="calc">Calculate</button>
+        </div>
+        <div id="gpaOut" class="gpa-out" hidden><strong id="gpaVal"></strong><span id="gpaClass"></span></div>
+      </div>
+    </section>
+  </main>
+  <footer>Built with Flask and scikit-learn. Not a substitute for your departmental course adviser.</footer>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
